@@ -2,7 +2,7 @@
 
 > Hướng Dẫn Thiết Lập Môi Trường Phát Triển (Dev Setup Guide)
 
-## Guide NestJs, Redis, Docker 
+## I. Guide NestJs, Redis
 1. NestJs
 -  Chạy một resource (router) trong NestJS
 ```bash
@@ -13,7 +13,8 @@ nest g resource <tên router> --no-spec
 ```bash
 redis-cli -h <hostname_or_IP> -p 6379 -a <password>
 ```
-3. Docker
+
+## II. Docker 
 -  Xóa tất cả Docker images
 ```bash
 docker rmi -f $(docker images -q)
@@ -22,20 +23,60 @@ docker rmi -f $(docker images -q)
 ```bash
 docker rm -f $(docker ps -aq)
 ```
--  Tạo một mạng Docker mới
+
+### A. Docker Network
+1. Tạo một mạng Docker mới
 ```bash
 docker network create <tên mạng>
 ```
--  Kết nối container vào mạng Docker
+2. Kết nối container vào mạng Docker
 ```bash
 docker network connect <tên mạng> <tên container>
 ```
--  Kiểm tra các kết nối mạng Docker
+3. Ngắt kết nối container khỏi mạng
+```bash
+docker network disconnect <tên_mạng> <tên_container>
+```
+4. Kiểm tra các kết nối mạng Docker
 ```bash
 docker network inspect <tên mạng>
 ```
+5. Xóa một mạng Docker
+```bash
+docker network rm <tên_mạng>
+```
+6. Kiểm tra danh sách các mạng
+```bash
+docker network ls
+```
 
-## Setup NVM
+### B. Docker Volume
+1. Tạo một volume mới
+```bash
+docker volume create <tên_volume>
+```
+2. Gán volume vào container
+```bash
+docker run -d -v <tên_volume>:/đường/dẫn/trong/container --name <tên_container> <image>
+```
+3. Kiểm tra thông tin chi tiết của volume
+```bash
+docker volume inspect <tên_volume>
+```
+4. Gỡ volume khỏi container
+```bash
+docker volume rm <tên_volume>
+```
+5. Kiểm tra danh sách volume
+```bash
+docker volume ls
+```
+6. Xóa tất cả volume không sử dụng
+```bash
+docker volume prune
+```
+
+## III. Setup NVM
 1. Cài đặt NVM trên Linux/MacOS
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
@@ -49,7 +90,7 @@ source ~/.bashrc
 nvm --version
 ```
 
-## Setup SSH key
+## IV. Setup SSH key
 1. Điều Hướng Đến Thư Mục SSH
 ```bash
 cd ~/.ssh
@@ -72,7 +113,7 @@ ssh-keygen -t rsa -b 4096 -C "example@gmail.com"
 cat ~/.ssh/id_rsa.pub
 ```
 
-## Setup Nginx trên Linux
+## V. Setup Nginx trên Linux
 -  Điều Hướng Đến Thư Mục sites-available
 ```bash
 cd /etc/nginx/sites-available
@@ -170,7 +211,7 @@ sudo nginx -t
 sudo systemctl reload nginx
 ```
 
-## Setup PM2
+## VI. Setup PM2
 1. Cài đặt PM2
 ```bash
 npm install -g pm2
@@ -225,12 +266,12 @@ sudo env PATH=$PATH:/usr/bin pm2 startup ubuntu -u <username> --hp /home/<userna
 pm2 save
 ```
 
-## Setup sequelize
+## VII. Setup sequelize
 - Cài đặt sequelize
 ```bash
 npm install sequelize sequelize-cli
 ```
-### Create, Run, Undo Migrations in Sequelize
+### A. Create, Run, Undo Migrations in Sequelize
 1. Tạo một migration (bảng) mới
 ```bash
 npx sequelize-cli migration:generate --name <tên file>
@@ -252,7 +293,7 @@ npx sequelize-cli db:migrate:undo --name <tên file>
 npx sequelize-cli db:migrate:undo
 ```
 
-### Create, Run, Undo Seeder in Sequelize
+#### B. Create, Run, Undo Seeder in Sequelize
 1. Tạo một file seeder
 ```bash
 npx sequelize-cli seed:generate --name <tên file>
